@@ -6,16 +6,17 @@ const store = useStore()
 </script>
 
 <template>
-  <div
-      class="flex flex-row justify-between items-center bg-white dark:bg-blue-700 px-6 py-4 drop-shadow-sm border-b-2 border-gray-100 dark:border-0 ">
-    <router-link :to="{name: 'home'}"
-                 class="font-bold text-lg hover:opacity-90 transition duration-200 ease-in-out  px-6 py-2 rounded-sm"
-    >
-      Where in the world?
-    </router-link>
-    <button @click="store.toggleAppearanceMode()"
-            class="capitalize font-semibold  text-sm space-x-2 flex items-center"
-    >
+  <div class="flex flex-row justify-center bg-white dark:bg-blue-700  px-4 md:px-6 py-4   drop-shadow-sm border-b-2 border-gray-100 dark:border-0 ">
+    <div
+        class=" flex flex-row w-full max-w-5xl justify-between  items-center">
+      <router-link :to="{name: 'home'}"
+                   class="font-bold text-lg hover:opacity-90 transition duration-200 ease-in-out px-1 md:px-6 py-2 rounded-sm"
+      >
+        Where in the world?
+      </router-link>
+      <button @click="store.toggleAppearanceMode()"
+              class="capitalize font-semibold  text-sm space-x-2 flex items-center"
+      >
         <font-awesome-icon v-if="store.appearanceMode === 'dark'"
                            :icon="['far', 'moon']"
         />
@@ -23,11 +24,13 @@ const store = useStore()
                            :icon="['far', 'sun']"
                            class="text-blue-900"
         />
-      <span>
+        <span>
       {{ store.appearanceMode }} Mode
       </span>
-    </button>
+      </button>
+    </div>
   </div>
+
 </template>
 
 <style scoped>
