@@ -2,6 +2,7 @@
 import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import axios from "axios";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 const countryParam = ref<string | null>(null);
 const countryFullName = ref<string | null>(null);
@@ -115,9 +116,12 @@ function setIsFetching(value = true) {
     <div v-else>
       <div>
         <router-link :to="{name:'home'}"
-                     class="bg-blue-700 px-6 py-2 rounded-sm drop-shadow"
+                     class="bg-blue-700 px-6 py-2 space-x-2 rounded-sm drop-shadow"
         >
-          Back
+          <font-awesome-icon :icon="['fas', 'arrow-left']"/>
+          <span>
+            Back
+          </span>
         </router-link>
       </div>
 
