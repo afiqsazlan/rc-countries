@@ -8,13 +8,14 @@ const store = useStore()
 <template>
   <div
       class="flex flex-row justify-between items-center bg-white dark:bg-blue-700 px-6 py-4 drop-shadow-sm border-b-2 border-gray-100 dark:border-0">
-    <div class="font-bold text-lg">
+    <router-link :to="{name: 'home'}"
+                 class="font-bold text-lg hover:opacity-80 px-6 py-2 rounded-sm"
+    >
       Where in the world?
-    </div>
+    </router-link>
     <button @click="store.toggleAppearanceMode()"
             class="capitalize font-semibold  text-sm space-x-2 flex items-center"
     >
-      <div>
         <font-awesome-icon v-if="store.appearanceMode === 'dark'"
                            :icon="['far', 'moon']"
         />
@@ -22,7 +23,6 @@ const store = useStore()
                            :icon="['far', 'sun']"
                            class="text-blue-900"
         />
-      </div>
       <span>
       {{ store.appearanceMode }} Mode
       </span>
