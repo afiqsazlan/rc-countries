@@ -88,7 +88,7 @@ async function searchCountriesByName(name) {
 
     return {
       success: true,
-      data: response.data
+      data: mapCountriesDetails(response.data)
     }
   } catch (e) {
     console.log(e)
@@ -110,7 +110,7 @@ async function searchCountriesByRegion(region) {
 
     return {
       success: true,
-      data: response.data
+      data: mapCountriesDetails(response.data)
     }
   } catch (e) {
     console.log(e)
@@ -153,13 +153,13 @@ function setIsFetching(value = true) {
 
 <template>
   <div class=" flex  flex-col justify-center items-center">
-    <div class="max-w-5xl">
+    <div class="w-full md:max-w-5xl">
       <div class="flex px-4 w-full md:px-12 flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between">
         <input v-model="search"
                placeholder="Search for a country..."
-               class="bg-blue-700 md:w-1/2 px-4 py-2 rounded-md"
+               class="text-gray-700 bg-white dark:text-white dark:bg-blue-700 md:w-1/2 px-4 py-2 rounded-md shadow-md "
         />
-        <select v-model="selectedRegion" class="bg-blue-700 px-4 py-2 rounded-md"
+        <select v-model="selectedRegion" class="bg-white dark:bg-blue-700 text-gray-700 dark:text-white px-4 py-2 rounded-md"
 
         >
           <option value="all">Filter by Region</option>
@@ -186,8 +186,8 @@ function setIsFetching(value = true) {
                 :key="`country-${index}`"
             >
               <router-link :to="{name: 'countries.show', params: {country:country.slug}}">
-                <div class="bg-blue-700 h-full w-full">
-                  <div>
+                <div class="bg-white dark:bg-blue-700 h-full w-full shadow border-gray-100 rounded-sm">
+                  <div class="border-b border-gray-100 md:border-0">
                     <img :src="country.flag_image_url"
                          :alt="country.flag_image_alt"
                     >

@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import AppLayout from '@/layouts/AppLayout.vue'
+import AppLayout from '@/layouts/App/AppLayout.vue'
 import CountryShowView from '@/views/CountryShowView.vue'
 
 const router = createRouter({
