@@ -7,7 +7,7 @@ const store = useStore()
 
 <template>
   <div
-      class="flex flex-row justify-between items-center bg-white dark:bg-blue-700 px-6 py-4 drop-shadow-sm border-b-2 border-gray-100">
+      class="flex flex-row justify-between items-center bg-white dark:bg-blue-700 px-6 py-4 drop-shadow-sm border-b-2 border-gray-100 dark:border-0">
     <div class="font-bold text-lg">
       Where in the world?
     </div>

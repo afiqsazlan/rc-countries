@@ -2,6 +2,8 @@
 import axios from "axios";
 import {onMounted, ref, watch} from 'vue'
 import debounce from 'lodash.debounce'
+import SearchInput from "@/components/SearchInput.vue";
+import SelectInput from "@/components/SelectInput.vue";
 
 let isFetching = ref(true);
 let countries = ref([]);
@@ -9,12 +11,12 @@ const search = ref('');
 const selectedRegion = ref('');
 
 const regions = [
-  'Asia',
-  'Oceania',
-  'Americas',
-  'Europe',
-  'Antarctic',
-  'Africa',
+  {value: 'Asia', label: 'Asia'},
+  {value: 'Oceania', label: 'Oceania'},
+  {value: 'Americas', label: 'Americas'},
+  {value: 'Europe', label: 'Europe'},
+  {value: 'Antarctic', label: 'Antarctic'},
+  {value: 'Africa', label: 'Africa'},
 ]
 
 onMounted(async () => {
@@ -154,21 +156,16 @@ function setIsFetching(value = true) {
 <template>
   <div class=" flex  flex-col justify-center items-center">
     <div class="w-full md:max-w-5xl">
-      <div class="flex px-4 w-full md:px-12 flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between">
-        <input v-model="search"
-               placeholder="Search for a country..."
-               class="text-gray-700 bg-white dark:text-white dark:bg-blue-700 md:w-1/2 px-4 py-2 rounded-md shadow-md "
-        />
-        <select v-model="selectedRegion" class="bg-white dark:bg-blue-700 text-gray-700 dark:text-white px-4 py-2 rounded-md"
 
-        >
-          <option value="all">Filter by Region</option>
-          <option v-for="region in regions"
-                  :key="`region-${region}`"
-          >
-            {{ region }}
-          </option>
-        </select>
+      <!-- Search and Filter -->
+      <div class="flex px-4 w-full md:px-12 flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between">
+        <SearchInput v-model="search" class="w-full md:w-1/2"
+                     placeholder="Search for a country..."
+        />
+        <SelectInput v-model="selectedRegion"
+                     :options="regions"
+                     placeholder="Select a region"
+        />
       </div>
 
       <div class="mt-24 md:mt-12">

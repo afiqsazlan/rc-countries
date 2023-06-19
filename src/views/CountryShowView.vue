@@ -106,60 +106,63 @@ function setIsFetching(value = true) {
 </script>
 
 <template>
-  <div class="px-8">
-    <div v-if="isFetching">
-      Is fetching...
-    </div>
-    <div v-else-if="!country">
-      No country found
-    </div>
-    <div v-else>
-      <div>
-        <router-link :to="{name:'home'}"
-                     class="bg-blue-700 px-6 py-2 space-x-2 rounded-sm drop-shadow"
-        >
-          <font-awesome-icon :icon="['fas', 'arrow-left']"/>
-          <span>
+  <div class="px-8 flex  flex-col justify-center items-center">
+    <div class="w-full md:max-w-5xl">
+      <div v-if="isFetching">
+        Is fetching...
+      </div>
+      <div v-else-if="!country">
+        No country found
+      </div>
+      <div v-else>
+        <div>
+          <router-link :to="{name:'home'}"
+                       class="bg-blue-700 px-6 py-2 space-x-2 rounded-sm drop-shadow"
+          >
+            <font-awesome-icon :icon="['fas', 'arrow-left']"/>
+            <span>
             Back
           </span>
-        </router-link>
-      </div>
+          </router-link>
+        </div>
 
-      <div class="mt-8">
-        <img :src="country.flag_image_url"
-             :alt="country.flag_image_alt"
-        />
-        <h1>{{ country.name_common }}</h1>
-        <ul>
-          <li><span>Native Name:</span> {{ country.name_native }}</li>
-          <li><span>Population:</span> {{ country.population }}</li>
-          <li><span>Region:</span> {{ country.region }}</li>
-          <li><span>Sub Region:</span> {{ country.sub_region }}</li>
-          <li><span>Capital:</span> {{ country.capital }}</li>
-        </ul>
-        <ul class="mt-8">
-          <li><span>Top Level Domain:</span> {{ country.top_level_domain?.join(', ') }}</li>
-          <li><span>Currencies:</span> {{ country.currencies?.join(', ') }}</li>
-          <li><span>Languages:</span> {{ country.languages?.join(', ') }}</li>
-        </ul>
-      </div>
+        <div class="mt-8">
+          <img :src="country.flag_image_url"
+               :alt="country.flag_image_alt"
+          />
+          <h1>{{ country.name_common }}</h1>
+          <ul>
+            <li><span>Native Name:</span> {{ country.name_native }}</li>
+            <li><span>Population:</span> {{ country.population }}</li>
+            <li><span>Region:</span> {{ country.region }}</li>
+            <li><span>Sub Region:</span> {{ country.sub_region }}</li>
+            <li><span>Capital:</span> {{ country.capital }}</li>
+          </ul>
+          <ul class="mt-8">
+            <li><span>Top Level Domain:</span> {{ country.top_level_domain?.join(', ') }}</li>
+            <li><span>Currencies:</span> {{ country.currencies?.join(', ') }}</li>
+            <li><span>Languages:</span> {{ country.languages?.join(', ') }}</li>
+          </ul>
+        </div>
 
-      <div class="space-y-4">
-        <p>Border Countries:</p>
-        <ul class="grid grid-cols-3 gap-4">
-          <li v-for="country in country.bordering_countries"
-              :key="`bordering-country-${country}`"
-          >
-            <router-link :to="{name: 'countries.show', params: {country: country}}"
-                         class="flex justify-center py-2 rounded-sm bg-blue-700 hover:bg-opacity-80 drop-shadow"
+        <div v-if="country.bordering_countries.length" class="space-y-4">
+          <p>Border Countries:</p>
+          <ul class="grid grid-cols-3 gap-4">
+            <li v-for="country in country.bordering_countries"
+                :key="`bordering-country-${country}`"
             >
-              {{ country }}
-            </router-link>
-          </li>
-        </ul>
+              <router-link :to="{name: 'countries.show', params: {country: country}}"
+                           class="flex justify-center py-2 rounded-sm bg-blue-700 hover:bg-opacity-80 drop-shadow"
+              >
+                {{ country }}
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
+    </div>
+
 </template>
 
 <style scoped>
