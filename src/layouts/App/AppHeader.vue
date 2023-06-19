@@ -7,9 +7,9 @@ const store = useStore()
 
 <template>
   <div
-      class="flex flex-row justify-between items-center bg-white dark:bg-blue-700 px-6 py-4 drop-shadow-sm border-b-2 border-gray-100 dark:border-0">
+      class="flex flex-row justify-between items-center bg-white dark:bg-blue-700 px-6 py-4 drop-shadow-sm border-b-2 border-gray-100 dark:border-0 ">
     <router-link :to="{name: 'home'}"
-                 class="font-bold text-lg hover:opacity-80 px-6 py-2 rounded-sm"
+                 class="font-bold text-lg hover:opacity-90 transition duration-200 ease-in-out  px-6 py-2 rounded-sm"
     >
       Where in the world?
     </router-link>
