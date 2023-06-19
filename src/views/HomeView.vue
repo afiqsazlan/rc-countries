@@ -19,7 +19,6 @@ const regions = [
 
 onMounted(async () => {
   const countriesFetched = await fetchCountries()
-  // const countriesFetched = await fetchCountries()
   if (countriesFetched.success) {
     countries.value = countriesFetched.data
     console.log(countries.value)
@@ -64,12 +63,11 @@ async function fetchCountries() {
   try {
     setIsFetching()
     const response = await axios.get("https://restcountries.com/v3.1/all?fields=name,population,region,capital,flags")
-    console.log(response.data[0])
     setIsFetching(false);
 
     return {
       success: true,
-      data: response.data
+      data: mapCountriesDetails(response.data)
     }
   } catch (e) {
     setIsFetching(false);
@@ -86,7 +84,6 @@ async function searchCountriesByName(name) {
     setIsFetching()
 
     const response = await axios.get(`https://restcountries.com/v3.1/name/${name}?fields=name,population,region,capital,flags`)
-    console.log(response.data[0])
     setIsFetching(false);
 
     return {
@@ -109,7 +106,6 @@ async function searchCountriesByRegion(region) {
     setIsFetching()
 
     const response = await axios.get(`https://restcountries.com/v3.1/region/${region}?fields=name,population,region,capital,flags`)
-    console.log(response.data[0])
     setIsFetching(false);
 
     return {
@@ -125,6 +121,20 @@ async function searchCountriesByRegion(region) {
       errors: e
     }
   }
+}
+
+function mapCountriesDetails(countries) {
+  return countries.map((country) => {
+    return {
+      name: country.name?.common ?? 'N/A',
+      capital: country?.capital ? country?.capital[0] : 'N/A',
+      region: country.region ?? 'N/A',
+      population: country.population ?? 'N/A',
+      flag_image_url: country.flags?.png ?? 'N/A',
+      flag_image_alt: country.flags?.alt ?? 'N/A',
+      slug: country.name?.common?.toLowerCase().replace(/\s+/g, "-")
+    }
+  })
 }
 
 function resetSelectedRegion() {
@@ -152,7 +162,7 @@ function setIsFetching(value = true) {
         <select v-model="selectedRegion" class="bg-blue-700 px-4 py-2 rounded-md"
 
         >
-          <option selected :value="null">Filter by Region</option>
+          <option value="all">Filter by Region</option>
           <option v-for="region in regions"
                   :key="`region-${region}`"
           >
@@ -175,32 +185,34 @@ function setIsFetching(value = true) {
             <li v-for="(country, index) in countries"
                 :key="`country-${index}`"
             >
-              <div class="bg-blue-700 h-full w-full">
-                <div>
-                  <img :src="country.flags.png"
-                       :alt="country.flags.alt"
-                  >
+              <router-link :to="{name: 'countries.show', params: {country:country.slug}}">
+                <div class="bg-blue-700 h-full w-full">
+                  <div>
+                    <img :src="country.flag_image_url"
+                         :alt="country.flag_image_alt"
+                    >
+                  </div>
+                  <div class="p-4">
+                    <p class="font-bold py-2">
+                      {{ country.name }}
+                    </p>
+                    <ul class="text-xs py-2">
+                      <li>
+                        <span class="font-semibold">Population: </span>
+                        <span>{{ country.population }}</span>
+                      </li>
+                      <li>
+                        <span class="font-semibold">Region: </span>
+                        <span>{{ country.region }}</span>
+                      </li>
+                      <li>
+                        <span class="font-semibold">Capital: </span>
+                        <span>{{ country.capital }}</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="p-4">
-                  <p class="font-bold py-2">
-                    {{ country.name?.common }}
-                  </p>
-                  <ul class="text-xs py-2">
-                    <li>
-                      <span class="font-semibold">Population: </span>
-                      <span>{{ country.population }}</span>
-                    </li>
-                    <li>
-                      <span class="font-semibold">Region: </span>
-                      <span>{{ country.region }}</span>
-                    </li>
-                    <li>
-                      <span class="font-semibold">Capital: </span>
-                      <span>{{ country?.capital ? country?.capital[0] : 'N/A' }}</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+              </router-link>
             </li>
           </ul>
         </div>
