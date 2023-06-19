@@ -59,11 +59,6 @@ watch(selectedRegion, debounce(async (region) => {
   }
 }, 500))
 
-
-watch(search, async (search) => {
-
-})
-
 async function fetchCountries() {
 
   try {
@@ -147,17 +142,17 @@ function setIsFetching(value = true) {
 </script>
 
 <template>
-  <main>
-    <div class="">
-      <div class="flex flex-row justify-between">
+  <div class=" flex  flex-col justify-center items-center">
+    <div class="max-w-5xl">
+      <div class="flex px-4 w-full md:px-12 flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between">
         <input v-model="search"
                placeholder="Search for a country..."
-               class="bg-blue-700 px-4 py-2 rounded-md"
+               class="bg-blue-700 md:w-1/2 px-4 py-2 rounded-md"
         />
         <select v-model="selectedRegion" class="bg-blue-700 px-4 py-2 rounded-md"
 
         >
-          <option :value="null">Filter by Region</option>
+          <option selected :value="null">Filter by Region</option>
           <option v-for="region in regions"
                   :key="`region-${region}`"
           >
@@ -166,48 +161,50 @@ function setIsFetching(value = true) {
         </select>
       </div>
 
-      <div v-if="isFetching">
-        Is fetching..
-      </div>
-      <div v-else-if="!countries.length">
-        No countries found.
-      </div>
-      <div v-else
-           class="px-8"
-      >
-        <ul class="grid grid-cols-4 gap-8 ">
-          <li v-for="(country, index) in countries"
-              :key="`country-${index}`"
-          >
-            <div class="bg-blue-700 h-full w-full">
-              <div>
-                <img :src="country.flags.png"
-                     :alt="country.flags.alt"
-                >
+      <div class="mt-24 md:mt-12">
+        <div v-if="isFetching">
+          Is fetching..
+        </div>
+        <div v-else-if="!countries.length">
+          No countries found.
+        </div>
+        <div v-else
+             class="px-4 md:px-12"
+        >
+          <ul class="grid grid-cols-1 md:grid-cols-4 gap-8 ">
+            <li v-for="(country, index) in countries"
+                :key="`country-${index}`"
+            >
+              <div class="bg-blue-700 h-full w-full">
+                <div>
+                  <img :src="country.flags.png"
+                       :alt="country.flags.alt"
+                  >
+                </div>
+                <div class="p-4">
+                  <p class="font-bold py-2">
+                    {{ country.name?.common }}
+                  </p>
+                  <ul class="text-xs py-2">
+                    <li>
+                      <span class="font-semibold">Population: </span>
+                      <span>{{ country.population }}</span>
+                    </li>
+                    <li>
+                      <span class="font-semibold">Region: </span>
+                      <span>{{ country.region }}</span>
+                    </li>
+                    <li>
+                      <span class="font-semibold">Capital: </span>
+                      <span>{{ country?.capital ? country?.capital[0] : 'N/A' }}</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div class="p-4">
-                <p class="font-bold py-2">
-                  {{ country.name?.common }}
-                </p>
-                <ul class="text-xs py-2">
-                  <li>
-                    <span class="font-semibold">Population: </span>
-                    <span>{{ country.population }}</span>
-                  </li>
-                  <li>
-                    <span class="font-semibold">Region: </span>
-                    <span>{{ country.region }}</span>
-                  </li>
-                  <li>
-                    <span class="font-semibold">Capital: </span>
-                    <span>{{ country?.capital ? country?.capital[0] : 'N/A' }}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </main>
+  </div>
 </template>
