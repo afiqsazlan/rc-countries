@@ -28,7 +28,7 @@ defineProps({
       <p class="text-xl lg:text-base font-bold lg:line-clamp-3 lg:min-h-[3rem]">
         {{ country.name }}
       </p>
-      <ul class="text-lg lg:text-xs py-4 lg:py-2 space-y-1">
+      <ul class="text-sm py-4 lg:py-2 space-y-1">
         <li>
           <span class="font-semibold">Population: </span>
           <span>{{ country.population }}</span>

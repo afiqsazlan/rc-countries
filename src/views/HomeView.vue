@@ -182,7 +182,7 @@ function setIsFetching(value = true) {
           <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8  ">
             <li v-for="(country, index) in countries"
                 :key="`country-${index}`"
-                class=" h-auto lg:min-h-[20rem] "
+                class=" h-auto lg:min-h-[22rem] "
             >
               <router-link :to="{name: 'countries.show', params: {country:country.slug}}">
                 <CountryCard :country="country"/>
