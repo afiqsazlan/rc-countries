@@ -9,9 +9,9 @@ import router from './router'
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {faMoon, faSun} from '@fortawesome/free-regular-svg-icons'
-import {faArrowLeft, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
+import {faArrowLeft, faMagnifyingGlass, faPersonRunning, faPersonCircleExclamation} from '@fortawesome/free-solid-svg-icons'
 
-library.add(faMoon, faSun, faArrowLeft, faMagnifyingGlass)
+library.add(faMoon, faSun, faArrowLeft, faMagnifyingGlass, faPersonRunning, faPersonCircleExclamation)
 
 const pinia = createPinia()
 const app = createApp(App)

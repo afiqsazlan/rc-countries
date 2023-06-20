@@ -5,6 +5,8 @@ import debounce from 'lodash.debounce'
 import SearchInput from "@/components/SearchInput.vue";
 import SelectInput from "@/components/SelectInput.vue";
 import CountryCard from "@/components/CountryCard.vue";
+import FetchingDataScreen from "@/components/FetchingDataScreen.vue";
+import NotFoundScreen from "@/components/NotFoundScreen.vue";
 
 let isFetching = ref(true);
 let countries = ref([]);
@@ -24,9 +26,6 @@ onMounted(async () => {
   const countriesFetched = await fetchCountries()
   if (countriesFetched.success) {
     countries.value = countriesFetched.data
-    console.log(countries.value)
-  } else {
-    console.log(countriesFetched)
   }
 })
 
@@ -74,7 +73,6 @@ async function fetchCountries() {
     }
   } catch (e) {
     setIsFetching(false);
-    console.log(e)
     return {
       success: false,
       errors: e
@@ -94,7 +92,6 @@ async function searchCountriesByName(name) {
       data: mapCountriesDetails(response.data)
     }
   } catch (e) {
-    console.log(e)
     setIsFetching(false);
 
     return {
@@ -116,7 +113,6 @@ async function searchCountriesByRegion(region) {
       data: mapCountriesDetails(response.data)
     }
   } catch (e) {
-    console.log(e)
     setIsFetching(false);
 
     return {
@@ -170,12 +166,8 @@ function setIsFetching(value = true) {
       </div>
 
       <div class="mt-24 md:mt-12">
-        <div v-if="isFetching">
-          Is fetching..
-        </div>
-        <div v-else-if="!countries.length">
-          No countries found.
-        </div>
+        <FetchingDataScreen v-if="isFetching" />
+        <NotFoundScreen v-else-if="!countries.length"/>
         <div v-else
              class="px-4 md:px-12"
         >

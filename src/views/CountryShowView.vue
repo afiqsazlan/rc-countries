@@ -4,6 +4,8 @@ import {useRoute} from "vue-router";
 import axios from "axios";
 import BackButton from "@/components/BackButton.vue";
 import CountryDetailsItem from "@/components/CountryDetailsItem.vue";
+import FetchingDataScreen from "@/components/FetchingDataScreen.vue";
+import NotFoundScreen from "@/components/NotFoundScreen.vue";
 
 const countryParam = ref<string | null>(null);
 const countryFullName = ref<string | null>(null);
@@ -113,12 +115,8 @@ function setIsFetching(value = true) {
       <div class="w-full ">
         <BackButton/>
       </div>
-      <div v-if="isFetching">
-        Is fetching...
-      </div>
-      <div v-else-if="!country">
-        No country found
-      </div>
+      <FetchingDataScreen v-if="isFetching" />
+      <NotFoundScreen v-else-if="!country"/>
       <div v-else>
         <div class="mt-12 lg:mt-24 grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
 
