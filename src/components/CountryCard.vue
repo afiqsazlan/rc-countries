@@ -21,11 +21,11 @@ defineProps({
     <div class=" items-center flex flex-col px-1 lg:px-2 pt-4 lg:pt-2 justify-center overflow-hidden h-1/2 ">
       <img :src="country.flag_image_url"
            :alt="country.flag_image_alt"
-           class="object-contain border border-gray-100 dark:border-0"
+           class="object-contain h-full border border-gray-100 dark:border-0"
       >
     </div>
     <div class="p-4 space-y-2 mt-4 lg:mt-0">
-      <p class="text-xl lg:text-base font-bold lg:line-clamp-3 lg:h-12">
+      <p class="text-xl lg:text-base font-bold lg:line-clamp-3 lg:min-h-[3rem]">
         {{ country.name }}
       </p>
       <ul class="text-lg lg:text-xs py-4 lg:py-2 space-y-1">
