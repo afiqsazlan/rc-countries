@@ -13,7 +13,7 @@ const router = createRouter({
             meta: {layout: AppLayout}
         },
         {
-            path: '/:country',
+            path: '/countries/:country',
             name: 'countries.show',
             component: CountryShowView,
             meta: {layout: AppLayout}
