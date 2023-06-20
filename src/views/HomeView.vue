@@ -4,6 +4,7 @@ import {onMounted, ref, watch} from 'vue'
 import debounce from 'lodash.debounce'
 import SearchInput from "@/components/SearchInput.vue";
 import SelectInput from "@/components/SelectInput.vue";
+import CountryCard from "@/components/CountryCard.vue";
 
 let isFetching = ref(true);
 let countries = ref([]);
@@ -178,37 +179,13 @@ function setIsFetching(value = true) {
         <div v-else
              class="px-4 md:px-12"
         >
-          <ul class="grid grid-cols-1 md:grid-cols-4 gap-8 ">
+          <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8  ">
             <li v-for="(country, index) in countries"
                 :key="`country-${index}`"
+                class=" h-auto lg:min-h-[20rem] "
             >
               <router-link :to="{name: 'countries.show', params: {country:country.slug}}">
-                <div class="bg-white dark:bg-blue-700 h-full w-full shadow border-gray-100 rounded-sm">
-                  <div class="border-b border-gray-100 md:border-0">
-                    <img :src="country.flag_image_url"
-                         :alt="country.flag_image_alt"
-                    >
-                  </div>
-                  <div class="p-4">
-                    <p class="font-bold py-2">
-                      {{ country.name }}
-                    </p>
-                    <ul class="text-xs py-2">
-                      <li>
-                        <span class="font-semibold">Population: </span>
-                        <span>{{ country.population }}</span>
-                      </li>
-                      <li>
-                        <span class="font-semibold">Region: </span>
-                        <span>{{ country.region }}</span>
-                      </li>
-                      <li>
-                        <span class="font-semibold">Capital: </span>
-                        <span>{{ country.capital }}</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                <CountryCard :country="country"/>
               </router-link>
             </li>
           </ul>
