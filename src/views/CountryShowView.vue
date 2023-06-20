@@ -1,31 +1,20 @@
 <script setup lang="ts">
-import {onMounted, ref, watch} from "vue";
+import {onBeforeMount, onMounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import axios from "axios";
-import BackButton from "@/components/BackButton.vue";
-import CountryDetailsItem from "@/components/CountryDetailsItem.vue";
-import FetchingDataScreen from "@/components/FetchingDataScreen.vue";
-import NotFoundScreen from "@/components/NotFoundScreen.vue";
-import {convertStringToUrlFriendly, convertUrlFriendlyToText} from '@/utils/country'
-
-interface Country {
-  name: string;
-  population?: number;
-  region?: string;
-  capital?: string;
-  flag_image_url?: string;
-  flag_image_alt?: string;
-  slug?: string;
-}
-
+import {convertStringToUrlFriendly, convertUrlFriendlyToText} from "../utils/country";
+import BackButton from "../components/BackButton.vue";
+import FetchingDataScreen from "../components/FetchingDataScreen.vue";
+import NotFoundScreen from "../components/NotFoundScreen.vue";
+import CountryDetailsItem from "../components/CountryDetailsItem.vue";
 
 const route = useRoute();
 
-const countryParam = ref<string | null>(null);
-const countryFullName = ref<string | null>(null);
-const isFetching = ref<boolean>(true)
+const countryParam = ref(null);
+const countryFullName = ref(null);
+const isFetching = ref(true)
 
-let country = ref<object | null>(null)
+let country = ref(null)
 
 onMounted(async () => {
 
@@ -33,6 +22,9 @@ onMounted(async () => {
   countryParam.value = route.params.country as string;
 
   countryFullName.value = convertUrlFriendlyToText(countryParam.value as string)
+
+  // Set page title
+  document.title = `${import.meta.env.VITE_APP_NAME} - ${countryFullName.value}`;
 
   setIsFetching();
 
@@ -46,6 +38,7 @@ onMounted(async () => {
   setIsFetching(false);
 
 })
+
 
 watch(
     () => route.params.country,
@@ -66,9 +59,6 @@ watch(
     }
 )
 
-interface Currency {
-  name: string;
-}
 function getCountryCurrencies(currencies: Currency[]) {
   return Object.values(currencies).map((currency) => {
     return currency.name;

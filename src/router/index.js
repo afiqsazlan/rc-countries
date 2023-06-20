@@ -10,15 +10,29 @@ const router = createRouter({
             path: '/',
             name: 'home',
             component: HomeView,
-            meta: {layout: AppLayout}
+            meta: {
+                layout: AppLayout,
+                title: `${import.meta.env.VITE_APP_NAME} - Home`
+            }
         },
         {
             path: '/countries/:country',
             name: 'countries.show',
             component: CountryShowView,
-            meta: {layout: AppLayout}
+            meta: {
+                layout: AppLayout,
+                title: `${import.meta.env.VITE_APP_NAME} - Country`
+            }
         },
     ]
+})
+
+router.beforeEach((to, from, next) => {
+    const title = to.meta.title
+    if (title) {
+        document.title = title
+    }
+    next()
 })
 
 export default router
