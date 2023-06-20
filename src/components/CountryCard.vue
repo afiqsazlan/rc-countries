@@ -17,7 +17,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="bg-white dark:bg-blue-700 h-full w-full shadow border-gray-100 rounded-sm">
+  <div class="bg-white dark:bg-blue-700 border border-white hover:border-gray-700 dark:border-blue-700 hover:dark:border-gray-100 transition duration-200 hover:dark:bg-white hover:dark:bg-opacity-10 ease-in-out h-full w-full shadow  rounded-sm">
     <div class=" items-center flex flex-col px-1 lg:px-2 pt-4 lg:pt-2 justify-center overflow-hidden h-1/2 ">
       <img :src="country.flag_image_url"
            :alt="country.flag_image_alt"
