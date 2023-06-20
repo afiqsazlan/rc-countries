@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from "axios";
 import {onMounted, ref, watch} from 'vue'
 import debounce from 'lodash.debounce'
 import SearchInput from "@/components/SearchInput.vue";
@@ -7,11 +6,14 @@ import SelectInput from "@/components/SelectInput.vue";
 import CountryCard from "@/components/CountryCard.vue";
 import FetchingDataScreen from "@/components/FetchingDataScreen.vue";
 import NotFoundScreen from "@/components/NotFoundScreen.vue";
+import {useStore} from "@/store/country";
 
-let isFetching = ref(true);
-let countries = ref([]);
+let filteredCountries = ref([]);
 const search = ref('');
 const selectedRegion = ref('');
+
+// Store
+const store = useStore()
 
 const regions = [
   {value: 'Asia', label: 'Asia'},
@@ -23,118 +25,57 @@ const regions = [
 ]
 
 onMounted(async () => {
-  const countriesFetched = await fetchCountries()
+  const countriesFetched = await store.fetchAllCountries()
   if (countriesFetched.success) {
-    countries.value = countriesFetched.data
+    store.countries = countriesFetched?.data
+    filteredCountries.value = store.countries;
   }
 })
 
-
+// Handle search
 watch(search, debounce(async (search) => {
-  let countriesFetched = [];
-  if (search) {
-    countriesFetched = await searchCountriesByName(search)
-  } else {
-    countriesFetched = await fetchCountries()
+
+  // If search is not reset due to region selected, restore all countries
+  if (!search) {
+    if (!selectedRegion.value) {
+      filteredCountries.value = store.countries;
+    }
+    return;
   }
 
+  resetSelectedRegion();
+
+  const countriesFetched = await store.searchCountriesByName(search)
+
   if (countriesFetched.success) {
-    countries.value = countriesFetched.data
+    filteredCountries.value = countriesFetched.data
   } else {
-    countries.value = []
+    filteredCountries.value = []
   }
 }, 500))
 
+// Handle selectedRegion
 watch(selectedRegion, debounce(async (region) => {
-  let countriesFetched = [];
-  if (region) {
-    countriesFetched = await searchCountriesByRegion(region)
-  } else {
-    countriesFetched = await fetchCountries()
+
+  // If region is not reset due to search updated, restore all countries
+  if (!region) {
+    if (!search.value) {
+      filteredCountries.value = store.countries;
+    }
+    return;
   }
 
+  resetSearch();
+
+  const countriesFetched = await store.searchCountriesByRegion(region)
+
   if (countriesFetched.success) {
-    countries.value = countriesFetched.data
+    filteredCountries.value = countriesFetched.data
   } else {
-    countries.value = []
+    filteredCountries.value = []
   }
 }, 500))
 
-async function fetchCountries() {
-
-  try {
-    setIsFetching()
-    const response = await axios.get("https://restcountries.com/v3.1/all?fields=name,population,region,capital,flags")
-    setIsFetching(false);
-
-    return {
-      success: true,
-      data: mapCountriesDetails(response.data)
-    }
-  } catch (e) {
-    setIsFetching(false);
-    return {
-      success: false,
-      errors: e
-    }
-  }
-}
-
-async function searchCountriesByName(name) {
-  try {
-    setIsFetching()
-
-    const response = await axios.get(`https://restcountries.com/v3.1/name/${name}?fields=name,population,region,capital,flags`)
-    setIsFetching(false);
-
-    return {
-      success: true,
-      data: mapCountriesDetails(response.data)
-    }
-  } catch (e) {
-    setIsFetching(false);
-
-    return {
-      success: false,
-      errors: e
-    }
-  }
-}
-
-async function searchCountriesByRegion(region) {
-  try {
-    setIsFetching()
-
-    const response = await axios.get(`https://restcountries.com/v3.1/region/${region}?fields=name,population,region,capital,flags`)
-    setIsFetching(false);
-
-    return {
-      success: true,
-      data: mapCountriesDetails(response.data)
-    }
-  } catch (e) {
-    setIsFetching(false);
-
-    return {
-      success: false,
-      errors: e
-    }
-  }
-}
-
-function mapCountriesDetails(countries) {
-  return countries.map((country) => {
-    return {
-      name: country.name?.common ?? 'N/A',
-      capital: country?.capital ? country?.capital[0] : 'N/A',
-      region: country.region ?? 'N/A',
-      population: country.population ?? 'N/A',
-      flag_image_url: country.flags?.png ?? 'N/A',
-      flag_image_alt: country.flags?.alt ?? 'N/A',
-      slug: country.name?.common?.toLowerCase().replace(/\s+/g, "-")
-    }
-  })
-}
 
 function resetSelectedRegion() {
   selectedRegion.value = ''
@@ -142,10 +83,6 @@ function resetSelectedRegion() {
 
 function resetSearch() {
   search.value = ''
-}
-
-function setIsFetching(value = true) {
-  isFetching.value = value;
 }
 
 </script>
@@ -166,13 +103,13 @@ function setIsFetching(value = true) {
       </div>
 
       <div class="mt-24 md:mt-12">
-        <FetchingDataScreen v-if="isFetching" />
-        <NotFoundScreen v-else-if="!countries.length"/>
+        <FetchingDataScreen v-if="store.isFetching"/>
+        <NotFoundScreen v-else-if="!filteredCountries.length"/>
         <div v-else
              class="px-4 md:px-12"
         >
           <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8  ">
-            <li v-for="(country, index) in countries"
+            <li v-for="(country, index) in filteredCountries"
                 :key="`country-${index}`"
                 class=" h-auto lg:min-h-[22rem] "
             >

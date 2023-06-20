@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useStore} from "@/stores/app";
+import {useStore} from "@/store/app";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 const store = useStore()
 </script>

@@ -1,3 +1,4 @@
+
 /*
 * Converts string such as 'San Marino' to 'san-marino'
 **/

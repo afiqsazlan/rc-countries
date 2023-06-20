@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 
-import {useStore} from "@/stores/app";
+import {useStore} from "@/store/app";
 const store = useStore()
 
 </script>
