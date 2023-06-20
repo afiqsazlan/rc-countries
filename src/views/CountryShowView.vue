@@ -23,8 +23,7 @@ onMounted(async () => {
 
   countryFullName.value = convertUrlFriendlyToText(countryParam.value as string)
 
-  // Set page title
-  document.title = `${import.meta.env.VITE_APP_NAME} - ${countryFullName.value}`;
+  setPageTitle(countryFullName.value);
 
   setIsFetching();
 
@@ -39,6 +38,10 @@ onMounted(async () => {
 
 })
 
+function setPageTitle(countryName) {
+  document.title = `${import.meta.env.VITE_APP_NAME} - ${countryName}`;
+}
+
 
 watch(
     () => route.params.country,
@@ -50,7 +53,9 @@ watch(
       const countryFound = await searchCountryByFullName(nextCountryName)
 
       if (countryFound.success) {
-        country.value = await mapCountryDetails(countryFound.data[0])
+        const data = countryFound.data[0];
+        setPageTitle(data?.name?.common);
+        country.value = await mapCountryDetails(data)
       }
 
       console.log('Should set fetch false')

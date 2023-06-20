@@ -22,7 +22,7 @@ const router = createRouter({
             meta: {
                 layout: AppLayout,
                 title: `${import.meta.env.VITE_APP_NAME} - Country`
-            }
+            },
         },
     ]
 })
