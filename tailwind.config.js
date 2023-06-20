@@ -9,6 +9,8 @@ module.exports = {
     ],
     theme: {
         colors: {
+            transparent: 'transparent',
+            'sky-500' : '#0ea5e9',
             'blue-700': 'hsl(209, 23%, 22%)',
             'blue-800': 'hsl(207, 26%, 17%)',
             'blue-900': 'hsl(200, 15%, 8%)',

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 interface Country {
   name: string;
-  population?: string;
+  population?: number;
   region?: string;
   capital?: string;
   flag_image_url?: string;
   flag_image_alt?: string;
+  slug?: string;
 }
 
 defineProps({

@@ -8,6 +8,16 @@ import FetchingDataScreen from "@/components/FetchingDataScreen.vue";
 import NotFoundScreen from "@/components/NotFoundScreen.vue";
 import {convertStringToUrlFriendly, convertUrlFriendlyToText} from '@/utils/country'
 
+interface Country {
+  name: string;
+  population?: number;
+  region?: string;
+  capital?: string;
+  flag_image_url?: string;
+  flag_image_alt?: string;
+  slug?: string;
+}
+
 
 const route = useRoute();
 
@@ -22,7 +32,7 @@ onMounted(async () => {
   // Get country name
   countryParam.value = route.params.country as string;
 
-  countryFullName.value = convertUrlFriendlyToText(countryParam.value as String)
+  countryFullName.value = convertUrlFriendlyToText(countryParam.value as string)
 
   setIsFetching();
 
@@ -43,7 +53,7 @@ watch(
       resetCountry();
       setIsFetching();
 
-      const nextCountryName = convertUrlFriendlyToText(nextCountrySlug as String)
+      const nextCountryName = convertUrlFriendlyToText(nextCountrySlug as string)
       const countryFound = await searchCountryByFullName(nextCountryName)
 
       if (countryFound.success) {
@@ -56,11 +66,15 @@ watch(
     }
 )
 
-function getCountryCurrencies(currencies) {
+interface Currency {
+  name: string;
+}
+function getCountryCurrencies(currencies: Currency[]) {
   return Object.values(currencies).map((currency) => {
     return currency.name;
   })
 }
+
 
 function getCountryNativeName(nativeName) {
   const keys = Object.keys(nativeName);
@@ -132,7 +146,7 @@ function setIsFetching(value = true) {
 </script>
 
 <template>
-  <div class="px-8 flex flex-col justify-center items-center">
+  <div class="px-8 flex pt-8 flex-col justify-center items-center">
     <div class="w-full md:max-w-5xl">
 
       <div class="w-full ">

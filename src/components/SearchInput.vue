@@ -18,7 +18,7 @@ defineEmits(['update:modelValue'])
       </svg>
     </span>
     <input :value="modelValue"
-           @input="$emit('update:modelValue', $event.target.value)"
+           @input="$emit('update:modelValue',($event.target as HTMLInputElement)?.value)"
            :placeholder="placeholder"
            class="text-gray-700 w-full dark:text-white bg-white dark:placeholder:text-white dark:bg-blue-700 pl-10 pr-4 py-2 rounded-md shadow-md "
     />

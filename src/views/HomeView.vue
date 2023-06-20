@@ -8,7 +8,17 @@ import FetchingDataScreen from "@/components/FetchingDataScreen.vue";
 import NotFoundScreen from "@/components/NotFoundScreen.vue";
 import {useStore} from "@/store/country";
 
-let filteredCountries = ref([]);
+interface Country {
+  name: string;
+  population?: number;
+  region?: string;
+  capital?: string;
+  flag_image_url?: string;
+  flag_image_alt?: string;
+  slug?: string;
+}
+
+const filteredCountries = ref<Country[]>([]);
 const search = ref('');
 const selectedRegion = ref('');
 
@@ -27,7 +37,7 @@ const regions = [
 onMounted(async () => {
   const countriesFetched = await store.fetchAllCountries()
   if (countriesFetched.success) {
-    store.countries = countriesFetched?.data
+    store.countries = countriesFetched.data
     filteredCountries.value = store.countries;
   }
 })
@@ -89,8 +99,24 @@ function resetSearch() {
 
 <template>
   <div class=" flex  flex-col justify-center items-center">
-    <div class="w-full md:max-w-5xl">
-
+    <div
+        class="w-full px-4 md:px-12 lg:px-16 flex justify-center py-16 bg-gradient-to-r from-[#4f46e5] dark:from-[#312e81] dark:to-[#0284c7] to-sky-500 dark:bg-white text-white dark:text-white ">
+      <div class="w-full md:max-w-5xl">
+        <h1 class="text-5xl lg:text-7xl font-bold ">
+          Where in the world?
+        </h1>
+        <h2 class="mt-2 text-lg lg:text-xl font-semibold lg:px-2">
+          Discover, Learn, and Experience the World
+        </h2>
+        <p class="mt-6 lg:mt-8 lg:px-2 text-sm w-full lg:w-1/2 leading-5">
+          Unveil essential facts and information about countries around the world.
+          Whether you're a student, a traveler, or simply curious about the world, our website provides a convenient
+          resource to access the basic facts you need. From official languages to currency and time zones, we have
+          gathered the key details to help you gain a better understanding of different countries.
+        </p>
+      </div>
+    </div>
+    <div class="w-full md:max-w-5xl mt-24">
       <!-- Search and Filter -->
       <div class="flex px-4 w-full md:px-12 flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between">
         <SearchInput v-model="search" class="w-full md:w-1/2"

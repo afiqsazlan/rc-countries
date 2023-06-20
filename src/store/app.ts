@@ -5,7 +5,7 @@ type Mode = 'dark' | 'light';
 export const useStore = defineStore('app', {
     state: () => {
         return {
-            mode: 'light' as Mode
+            mode: 'dark' as Mode
         }
     },
     getters: {

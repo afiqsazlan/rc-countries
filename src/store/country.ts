@@ -1,6 +1,55 @@
 import {defineStore} from 'pinia'
 import axios from "axios";
-import {state} from "vue-tsc/out/shared";
+import {convertStringToUrlFriendly} from "@/utils/country";
+
+
+interface CountryProp {
+    name: {
+        common: string,
+    },
+    capital: string,
+    region: string,
+    population: number,
+    flags: {
+        png: string,
+        alt: string
+    }
+}
+
+interface Country {
+    name: string;
+    population?: number;
+    region?: string;
+    capital?: string;
+    flag_image_url?: string;
+    flag_image_alt?: string;
+    slug?: string;
+}
+
+interface CountryDetails{
+    name_common: string,
+    name_native: string,
+    population?: number;
+    region?: string;
+    sub_region?: string;
+    capital?: string;
+    top_level_domain: string;
+    flag_image_url: string;
+    flag_image_alt: string;
+    currencies: Array<string>;
+    languages: Array<string>;
+    bordering_countries: Array<{ name: string, slug?: string }>;
+}
+
+interface FetchCountriesResponse {
+    success: Boolean,
+    data: Country[],
+}
+
+interface FindCountryResponse {
+    success: Boolean,
+    data: CountryDetails
+}
 
 const apiUrl = 'https://restcountries.com/v3.1'
 export const useStore = defineStore('country', {
@@ -13,7 +62,7 @@ export const useStore = defineStore('country', {
     },
 
     actions: {
-        async fetchAllCountries() {
+        async fetchAllCountries(): Promise<FetchCountriesResponse> {
             let countriesFetched;
             this.setIsFetching()
             try {
@@ -32,7 +81,7 @@ export const useStore = defineStore('country', {
             return countriesFetched;
         },
 
-        async searchCountriesByName(name: string) {
+        async searchCountriesByName(name: string): Promise<FetchCountriesResponse> {
 
             let countriesFetched;
             this.setIsFetching()
@@ -54,7 +103,7 @@ export const useStore = defineStore('country', {
             return countriesFetched;
         },
 
-        async searchCountriesByRegion(region: string) {
+        async searchCountriesByRegion(region: string): Promise<FetchCountriesResponse> {
 
 
             let countriesFetched;
@@ -75,15 +124,16 @@ export const useStore = defineStore('country', {
 
             this.setIsFetching(false)
             return countriesFetched;
-
         },
+
 
         setIsFetching(value = true) {
             this.isFetching = value;
         },
 
-        mapCountriesDetails(countries: Array<any>) {
-            return countries.map((country) => {
+
+        mapCountriesDetails(countries: CountryProp[]) {
+            return countries.map((country: CountryProp): Country => {
                 return {
                     name: country.name?.common ?? 'N/A',
                     capital: country?.capital ? country?.capital[0] : 'N/A',
@@ -97,3 +147,4 @@ export const useStore = defineStore('country', {
         }
     }
 })
+
